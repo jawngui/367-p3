@@ -1,7 +1,33 @@
+/////////////////////////////////////////////////////////////////////////////
+// Semester:         CS367 Fall 2017 
+// PROJECT:          p3
+// FILE:             MedianStream.java
+//
+// TEAM:    p3 pair 2
+// Authors: Jasper Nelson, Matt P'ng
+// Author1: Jasper Nelson, jnelson27@wisc.edu, jnelson27, 002
+// Author2: Matt P'ng, mpng@wisc.edu, mpng, 002
+// ---------------- OTHER ASSISTANCE CREDITS 
+// Persons:
+// Online sources: javadocs
+//////////////////////////// 80 columns wide //////////////////////////////////
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
+/**
+ * The MedianStream is an object that includes instances of the two heaps and also
+ * tracks the median of each instance of Median Stream.  In addition, MedianStream
+ * includes code to handle command line input of files, and then find the median of each 
+ * individual file, and finally, write each median to a new final.  Additionally, it has 
+ * code to process input from the console and calculates a running median of all user inputs.  
+ * 
+ * @author Jasper Nelson, Matt P'ng
+ *
+ */
+
+
 
 public class MedianStream
 {
@@ -59,26 +85,26 @@ public class MedianStream
        boolean quit = false;
        while(!quit)
        {
-    	   System.out.println(PROMPT_NEXT_VALUE);
+    	   System.out.print(PROMPT_NEXT_VALUE);
     	   String nonDub;
     	   Double input;
-    	   if(stdin.hasNextDouble())
+    	   if(stdin.hasNextDouble()) //If format is correct, this block is taken
     	   {
-    		   input = stdin.nextDouble();
-    		   temps.currentMedian = temps.getMedian(input);
-    		   System.out.println(MEDIAN + temps.currentMedian);
+    		   input = stdin.nextDouble(); 
+    		   temps.currentMedian = temps.getMedian(input); //update PQs and Median
+    		   System.out.println(MEDIAN + temps.currentMedian); //print output
     	   }
-    	   else if(stdin.hasNext())
+    	   else if(stdin.hasNext()) //taken if input format is incorrect
     	   {
-    		   nonDub = stdin.next();
-    		   if(nonDub.equals("q"))
+    		   nonDub = stdin.next().trim();
+    		   if(nonDub.equalsIgnoreCase("q")) //quit without error
     		   {
     			   quit = true;
     		   }
-    		   else
+    		   else //quit with error message displayed
     		   {
     			   System.out.println(EXIT_MESSAGE);
-			   quit = true;
+    			   break;
     		   }
     	   }
        }
@@ -107,21 +133,22 @@ public class MedianStream
     {
     	try
 		{
-    		String[] parse = filename.split("\\.");
+    		String[] parse = filename.split("\\."); //get filename w/o extension
     		MedianStream temps = new MedianStream();
 			File dataSet = new File(filename);
-			File output = new File(parse[0] + "_out.txt");
-			Scanner read = new Scanner(dataSet);
+			File output = new File(parse[0] + "_out.txt"); //creates output file with
+														   //correctly formatted name
+			Scanner read = new Scanner(dataSet);		   
 			PrintWriter toFile = new PrintWriter(output);
 			while(read.hasNext())
 			{
-				if(read.hasNextDouble())
+				if(read.hasNextDouble()) //if input format is correct take this block
 				{
 					Double toAdd = read.nextDouble();
 					temps.currentMedian = temps.getMedian(toAdd);
 					toFile.printf(DOUBLE_FORMAT, temps.currentMedian);
 				}
-				else
+				else //else, close scannner and PW and quit
 				{
 					read.close();
 					toFile.close();
