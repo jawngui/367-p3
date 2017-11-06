@@ -1,5 +1,16 @@
-
-
+/////////////////////////////////////////////////////////////////////////////
+// Semester:         CS367 Fall 2017 
+// PROJECT:          p3
+// FILE:             MinPQ.java
+//
+// TEAM:    p3 pair 2
+// Authors: Jasper Nelson, Matt P'ng
+// Author1: Jasper Nelson, jnelson27@wisc.edu, jnelson27, 002
+// Author2: Matt P'ng, mpng@wisc.edu, mpng, 002
+// ---------------- OTHER ASSISTANCE CREDITS 
+// Persons:
+// Online sources: javadocs
+//////////////////////////// 80 columns wide //////////////////////////////////
 import java.util.Arrays;
 
 /**
@@ -9,7 +20,7 @@ import java.util.Arrays;
  *
  * <p>Bugs: NA
  *
- * @author Matt P'ng
+ * @author Matt P'ng, Jasper Nelson
  */
 
 public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
@@ -18,8 +29,12 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
     private static final int INITIAL_SIZE = 10;
     private int numItems = 0;
 
-    public MinPQ(){
+    //ADD MORE DATA PRIVATE DATA FIELDS AS YOU NEED.
+
+    public MinPQ()
+    {
         this.items = (E[]) new Comparable[INITIAL_SIZE];
+        // TO-DO: Complete the constructor for any private data fields that you add.
     }
     
     
@@ -30,7 +45,8 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
      *
      * @return true if no elements in queue, false otherwise.
      */
-    public boolean isEmpty(){
+    public boolean isEmpty()
+    {
     	return numItems==0;
     }
     /**
@@ -45,48 +61,64 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
      * @param item the item to add
      * @throws IllegalArgumentException if item is null
      */
-     public void insert(E item){
+     public void insert(E item)
+     {
     	 boolean done = false;
+    	 E tmp;
+
     	 if (item == null ) 
     		 throw new IllegalArgumentException();
-    	 
-    	 if (numItems + 1 == items.length) {
+    	 /*
+    	  * if numItems + 1 equals the length of the array, you must expand
+    	  * the array before adding to it so there is room.
+    	  */
+    	 if (numItems + 1 == items.length)
+    	 {
     		items = Arrays.copyOf(items, items.length *2);
     	 }
     	 
-    	 items[numItems+1] = item;
-    	 int index = numItems+1;
-    	 int check = index/2;
- 	
-    	 while (!done){
-	 		if (index == 1){
+    	 items[numItems+1] = item;//set item to the last index in the heap
+    	 int index = numItems+1;  //the index of item
+    	 int check = index/2;	  //the index of item's parent
+    	 while (!done)
+    	 {
+    		 
+	 		if (index == 1)  //item is at the top of the heap
+	 		{
 	 			done = true;
 	 			break;
 	 		}
-	 		
-	 		if (item.compareTo(items[check]) < 0){
+	 		// if item is lower than its parent, you swap the two items
+	 		if (item.compareTo(items[check]) < 0)
+	 		{
 	 			items[index] = items[check];
 	 			items[check] = item;
-	 			index = check;
-	 			check = index/2;		
-	 		}else{
+	     		index = check;  //update item's position
+	     		check = index/2;//update the parent position
+	 		}
+	 		else
+	 		{
 	 			done = true;
 	 		}	
 	 	}
+	 	
 	 	numItems++;
+	 	
      }
     /**
      * Returns the highest priority item in the priority queue.
      *
      * MinPriorityQueue => it will return the smallest valued element.
+     * MaxPriorityQueue => it will return the largest valued element.
      *
      * @return the highest priority item in the priority queue.
      * @throws EmptyQueueException if priority queue is empty.
      */
-    public E getMax() throws EmptyQueueException{
-    	if (isEmpty()){
+    public E getMax() throws EmptyQueueException
+    {
+    	if (isEmpty())
     		throw new EmptyQueueException();
-    	}
+    	
     	return items[1];
     }
 
@@ -96,11 +128,13 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
      * queue accordingly.
      *
      * MinPriorityQueue => it will return and remove the smallest valued element.
+     * MaxPriorityQueue => it will return and remove the largest valued element.
      *
      * @return the highest priority item in the priority queue.
      * @throws EmptyQueueException if priority queue is empty.
      */
-    public E removeMax() throws EmptyQueueException{
+    public E removeMax() throws EmptyQueueException
+    {
     	if (isEmpty() == true){throw new EmptyQueueException();}
     	E tmp = items[1]; // tmp is removed maximum value that will be returned
     	E tmp2 = null;
@@ -142,12 +176,15 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
     	return tmp;
     }
 
+
     /**
      * Returns the number of elements in the priority queue.
      *
      * @return number of elements in the queue.
      */
-    public int size(){
+    public int size()
+    {
 		return numItems;
     }
+    
 }
